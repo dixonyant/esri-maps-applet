@@ -6,7 +6,6 @@ export default function MapLibreCDN() {
     return (
         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
             <Text>MapLibre CDN Page</Text>
-            <Button title="Go Back" onPress={() => router.back()} />
         </View>
     );
 }

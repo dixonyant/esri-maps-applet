@@ -21,12 +21,6 @@ export default function MapLibre() {
           >
             <Text className="text-white font-medium">MapLibre</Text>
           </Pressable>
-          <Pressable
-            className="px-4 py-2 bg-gray-400 rounded"
-            onPress={() => router.back()}
-          >
-            <Text className="text-white font-medium">Back</Text>
-          </Pressable>
         </View>
       </View>
       {/* Map area placeholder */}
