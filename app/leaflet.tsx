@@ -1,33 +1,43 @@
 // app/page-one.tsx
-import { View, Text, Pressable } from "react-native";
+import { View } from "react-native";
 import { useRouter } from "expo-router";
+import { WebView } from "react-native-webview";
+
+const leafletHTML = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    #map { height: 100vh; width: 100vw; margin: 0; padding: 0; }
+    html, body { height: 100%; margin: 0; padding: 0; }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    var map = L.map('map').setView([51.505, -0.09], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '© OpenStreetMap'
+    }).addTo(map);
+  </script>
+</body>
+</html>
+`;
 export default function Leaflet() {
   const router = useRouter();
   const key = process.env.EXPO_PUBLIC_ARCGIS_API_KEY;
+
   return (
-    <View className="flex-1 bg-white">
-      {/* Top navigation and title */}
-      <View className="pt-12 pb-4 px-4 bg-gray-100 flex-row items-center justify-between">
-        <Text className="text-xl font-bold">Leaflet</Text>
-        <View className="flex-row space-x-2">
-          <Pressable
-            className="px-4 py-2 bg-blue-500 rounded"
-            onPress={() => router.push("/leaflet")}
-          >
-            <Text className="text-white font-medium">Leaflet</Text>
-          </Pressable>
-          <Pressable
-            className="px-4 py-2 bg-green-600 rounded"
-            onPress={() => router.push("/maplibre")}
-          >
-            <Text className="text-white font-medium">MapLibre</Text>
-          </Pressable>
-        </View>
-      </View>
-      {/* Map area placeholder */}
-      <View className="flex-1 items-center justify-center bg-gray-200">
-        <Text className="text-gray-500">Map will go here</Text>
-      </View>
+    <View style={{ flex: 1 }}>
+      <WebView
+        originWhitelist={['*']}
+        source={{ html: leafletHTML }}
+        style={{ flex: 1 }}
+      />
     </View>
   );
 }

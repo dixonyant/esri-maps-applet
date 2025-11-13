@@ -1,32 +1,40 @@
 // app/page-two.tsx
-import { View, Text, Pressable } from "react-native";
-import { useRouter } from "expo-router";
+import { View } from "react-native";
+import { WebView } from "react-native-webview";
+
+const esriLeafletHTML = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    #map { height: 100vh; width: 100vw; margin: 0; padding: 0; }
+    html, body { height: 100%; margin: 0; padding: 0; }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/esri-leaflet/dist/esri-leaflet.js"></script>
+  <script>
+    var map = L.map('map').setView([37.75, -122.23], 10);
+    L.esri.basemapLayer('Topographic').addTo(map);
+    L.esri.featureLayer({
+      url: 'https://services.arcgis.com/V6ZHFr6zdgNZuVG0/arcgis/rest/services/USA_Major_Cities/FeatureServer/0'
+    }).addTo(map);
+  </script>
+</body>
+</html>
+`;
 export default function MapLibre() {
-  const router = useRouter();
   return (
-    <View className="flex-1 bg-white">
-      {/* Top navigation and title */}
-      <View className="pt-12 pb-4 px-4 bg-gray-100 flex-row items-center justify-between">
-        <Text className="text-xl font-bold">MapLibre</Text>
-        <View className="flex-row space-x-2">
-          <Pressable
-            className="px-4 py-2 bg-blue-500 rounded"
-            onPress={() => router.push("/leaflet")}
-          >
-            <Text className="text-white font-medium">Leaflet</Text>
-          </Pressable>
-          <Pressable
-            className="px-4 py-2 bg-green-600 rounded"
-            onPress={() => router.push("/maplibre")}
-          >
-            <Text className="text-white font-medium">MapLibre</Text>
-          </Pressable>
-        </View>
-      </View>
-      {/* Map area placeholder */}
-      <View className="flex-1 items-center justify-center bg-gray-200">
-        <Text className="text-gray-500">Map will go here</Text>
-      </View>
+    <View style={{ flex: 1 }}>
+      <WebView
+        originWhitelist={['*']}
+        source={{ html: esriLeafletHTML }}
+        style={{ flex: 1 }}
+      />
     </View>
   );
 }
