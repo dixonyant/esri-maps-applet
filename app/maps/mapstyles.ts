@@ -12,12 +12,11 @@ export const leafletMapStyle1 = `
 <body>
   <div id="map"></div>
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <script src="https://unpkg.com/esri-leaflet/dist/esri-leaflet.js"></script>
   <script>
-    var map = L.map('map').setView([37.75, -122.23], 10);
-    L.esri.basemapLayer('Topographic').addTo(map);
-    L.esri.featureLayer({
-      url: 'https://services.arcgis.com/V6ZHFr6zdgNZuVG0/arcgis/rest/services/USA_Major_Cities/FeatureServer/0'
+    var map = L.map('map').setView([51.505, -0.09], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '© OpenStreetMap'
     }).addTo(map);
   </script>
 </body>
