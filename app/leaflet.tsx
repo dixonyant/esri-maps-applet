@@ -1,37 +1,53 @@
-// app/page-one.tsx
-import { Platform, View, Pressable, Text } from "react-native";
-import { useState } from "react";
+
+import { ActivityIndicator } from "react-native";
+import { useEffect, useState } from "react";
 import { useRouter } from "expo-router";
-import { WebView } from "react-native-webview";
+import { LeafletView } from "react-native-leaflet-view";
 import { leafletMapStyle1, leafletMapStyle2 } from "./maps/mapstyles";
 
+// https://www.npmjs.com/package/react-native-leaflet-view
+const DEFAULT_LOCATION = {
+  latitude: -23.5489,
+  longitude: -46.6388
+};
 export default function Leaflet() {
   const router = useRouter();
   const key = process.env.EXPO_PUBLIC_ARCGIS_API_KEY;
   const mapStyles = [leafletMapStyle1, leafletMapStyle2];
-  const [styleIndex, setStyleIndex] = useState(0);
 
-  const handleToggle = () => {
-    setStyleIndex((prev) => (prev + 1) % mapStyles.length);
-  };
+  const [webViewContent, setWebViewContent] = useState<string | null>(null);
+
+  useEffect(() => {
+    let isMounted = true;
+    
+    const loadMapStyle = async () => {
+      if (isMounted) {
+        setTimeout(() => {
+          setWebViewContent(leafletMapStyle2);
+        }, 1000);
+      }
+    };
+
+    loadMapStyle();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  if (!webViewContent) {
+    return (
+      <ActivityIndicator size="large" style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} />
+    );
+  }
 
   return (
-    <View style={{ flex: 1 }}>
-      <Pressable
-        onPress={handleToggle}
-        style={{ position: 'absolute', top: 40, right: 20, zIndex: 10, backgroundColor: '#2563eb', paddingHorizontal: 16, paddingVertical: 10, borderRadius: 8 }}
-      >
-        <Text style={{ color: 'white', fontWeight: 'bold' }}>Change Map</Text>
-      </Pressable>
-      {Platform.OS === 'web' ? (
-        <iframe srcDoc={mapStyles[styleIndex]} style={{ width: '100%', height: '100%', border: 'none' }}/>
-      ) : (
-        <WebView
-          originWhitelist={['about:blank']}
-          source={{ html: mapStyles[styleIndex] }}
-          style={{ flex: 1 }}
-        />
-      )}
-    </View>
+    <LeafletView
+      source={{ html: webViewContent }}
+      mapCenterPosition={{
+        lat: DEFAULT_LOCATION.latitude,
+        lng: DEFAULT_LOCATION.longitude,
+      }}
+    />
   );
 }

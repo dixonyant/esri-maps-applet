@@ -10,7 +10,13 @@ export default function Home() {
           className="w-full mb-4 px-4 py-3 bg-blue-500 rounded items-center"
           onPress={() => router.push("/leaflet")}
         >
-          <Text className="text-white font-medium text-lg">Leaflet</Text>
+          <Text className="text-white font-medium text-lg">Leaflet Component</Text>
+        </Pressable>
+        <Pressable
+          className="w-full mb-4 px-4 py-3 bg-purple-600 rounded items-center"
+          onPress={() => router.push("/leafletcdn")}
+        >
+          <Text className="text-white font-medium text-lg">Leaflet CDN</Text>
         </Pressable>
         <Pressable
           className="w-full px-4 py-3 bg-green-600 rounded items-center"
