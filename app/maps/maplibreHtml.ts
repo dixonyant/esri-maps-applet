@@ -44,6 +44,7 @@ export const maplibreArcgisHTML = `
     const accessToken = "{{TOKEN}}";
     const map = new maplibregl.Map({
       container: "map",
+      style: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
       center: [-122.402, 37.789],
       zoom: 14,
     });
