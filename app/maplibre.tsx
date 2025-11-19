@@ -1,26 +1,36 @@
-// app/page-two.tsx
-import { Platform, View, Pressable, Text } from "react-native";
+import { Platform, View, Pressable, Text, Alert } from "react-native";
 import { useState, useEffect } from "react";
 import { WebView } from "react-native-webview";
 import { maplibreHTML, maplibreArcgisHTML } from "./maps/maplibreHtml";
 
 export default function MapLibre() {
+  const alertMessage = "No API key provided. You will need to set an ArcGIS API key in the environment variables to use ArcGIS Basemaps with MapLibre.";
   const token = process.env.EXPO_PUBLIC_ARCGIS_API_KEY;
   const htmlWithToken = (html: string) => html.replace(/{{TOKEN}}/g, token || "");
   const [useArcgis, setUseArcgis] = useState(false);
   const [html, setHtml] = useState(() => htmlWithToken(maplibreHTML));
 
   useEffect(() => {
-    console.log("HTML updated to useArcgis =", useArcgis);
-    console.log("Current HTML:", html);
     if (useArcgis) {
       setHtml(htmlWithToken(maplibreArcgisHTML));
     } else {
-      setHtml(htmlWithToken(maplibreHTML));
+      setHtml(maplibreHTML);
     }
   }, [useArcgis, token]);
 
   const toggle = () => {
+    if (!useArcgis && (!token || token.trim() === "")) {
+      if (Platform.OS === 'web') {
+        alert(alertMessage);
+      } else {
+        Alert.alert(
+          "Missing ArcGIS API Key",
+          alertMessage,
+          [{ text: "OK" }]
+        );
+      }
+      return;
+    }
     setUseArcgis((prev) => !prev);
   };
 
