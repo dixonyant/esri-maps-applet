@@ -1,9 +1,11 @@
 import { Text, View, Pressable, ImageBackground } from "react-native";
 import { Stack, useRouter } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 export default function Home() {
   const router = useRouter();
   return (
     <>
+      <StatusBar style="light" />
       <Stack.Screen
         options={{
           title: "",
@@ -13,25 +15,21 @@ export default function Home() {
       />
       <ImageBackground
         source={{
-          uri: "https://www.esri.com/arcgis-blog/wp-content/uploads/2021/08/Nighttime-Lights-Globe-EastHem2.jpg",
+          uri: "https://kleos.space/wp-content/uploads/2021/09/earth.jpg",
         }}
         style={{ flex: 1 }}
         resizeMode="cover"
       >
-        <View
-          className="flex-1 justify-center items-center bg-black/50"
-        >
+        <View className="flex-1 justify-center items-center bg-black/50">
           <View className="w-full max-w-xs items-center">
             <Pressable
-              className="w-full mb-4 px-4 py-3 bg-purple-600 rounded items-center"
-              onPress={() => router.push("/leafletcdn")}
+              className="w-full mb-10 px-4 py-5 bg-purple-600 rounded items-center shadow-md shadow-purple-900/90"
+              onPress={() => router.push("/leaflet")}
             >
-              <Text className="text-white font-medium text-lg">
-                Leaflet CDN
-              </Text>
+              <Text className="text-white font-medium text-lg">Leaflet</Text>
             </Pressable>
             <Pressable
-              className="w-full px-4 py-3 bg-green-600 rounded items-center"
+              className="w-full px-4 py-5 bg-blue-600 rounded items-center shadow-md shadow-blue-900/90"
               onPress={() => router.push("/maplibre")}
             >
               <Text className="text-white font-medium text-lg">MapLibre</Text>
